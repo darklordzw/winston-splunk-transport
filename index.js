@@ -8,7 +8,7 @@ module.exports = class SplunkTransport extends Transport {
    * @param {object} opts.splunk Splunk-specific transport options.
    * @param {string} opts.splunk.token The token used for connecting to the Splunk HTTP appender.
    * @param {string} [opts.splunk.source=winston] The value used for the "source" metadata passed to Splunk.
-   * @param {string} [opts.splunk.sourcetype=winston-splunk-transport] The value used for the "sourcetype" metadata passed to Splunk.
+   * @param {string} [opts.splunk.sourcetype=winston-splunk-http-transport] The value used for the "sourcetype" metadata passed to Splunk.
    * @param {integer} [opts.splunk.batchInterval=1000] The number of milliseconds to wait before flushing logs.
    * @param {integer} [opts.splunk.maxBatchCount=10] The number of logs to batch before flushing.
    * @param {integer} [opts.splunk.maxBatchSize=1024] The size of the batch, in bytes, to accumulate before flushing.
@@ -25,7 +25,7 @@ module.exports = class SplunkTransport extends Transport {
 
     // "source" and "sourcetype" are used to set the corresponding splunk log metadata.
     this.source = opts.splunk.source || "winston";
-    this.sourcetype = opts.splunk.sourcetype || "winston-splunk-transport";
+    this.sourcetype = opts.splunk.sourcetype || "winston-splunk-http-transport";
 
     // Configure splunk defaults.
     const splunkOptions = {

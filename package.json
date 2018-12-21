@@ -1,5 +1,5 @@
 {
-  "name": "winston-splunk-transport",
+  "name": "winston-splunk-http-transport",
   "version": "0.0.1",
   "description": "A simple winston transport for logging to splunk.",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/darklordzw/winston-splunk-transport.git"
+    "url": "git+https://github.com/darklordzw/winston-splunk-http-transport.git"
   },
   "keywords": [
     "splunk",
@@ -18,9 +18,9 @@
   "author": "Ben Whatley",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/darklordzw/winston-splunk-transport/issues"
+    "url": "https://github.com/darklordzw/winston-splunk-http-transport/issues"
   },
-  "homepage": "https://github.com/darklordzw/winston-splunk-transport#readme",
+  "homepage": "https://github.com/darklordzw/winston-splunk-http-transport#readme",
   "dependencies": {
     "splunk-logging": "0.10.1",
     "winston-transport": "4.2.0"
