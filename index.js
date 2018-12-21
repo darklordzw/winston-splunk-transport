@@ -58,9 +58,29 @@ module.exports = class SplunkTransport extends Transport {
   }
 
   log(info, callback) {
+    // Append splat items to the message as "meta".
+    let meta;
+    if (info["Symbol(splat)"] && info["Symbol(splat)"].length) {
+      meta = [];
+      info["Symbol(splat)"].forEach(item => {
+        if (item instanceof Error) {
+          meta.push({
+            error: item.message,
+            name: item.name,
+            stack: item.stack
+          });
+        } else if (Object.keys(item).length) {
+          meta.push(item);
+        }
+      });
+    }
+
     const payload = {
-      message: info.message,
-      metadata: this.metadata,
+      message: {
+        message: info.message,
+        meta
+      },
+      metadata: { source: this.source, sourcetype: this.sourcetype },
       severity: info.level
     };
     this.splunkLogger.send(payload, () => callback());
