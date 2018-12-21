@@ -1,0 +1,36 @@
+{
+  "name": "winston-splunk-transport",
+  "version": "1.0.0",
+  "description": "A simple winston transport for logging to splunk.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint --fix . || exit 0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darklordzw/winston-splunk-transport.git"
+  },
+  "keywords": [
+    "splunk",
+    "winston"
+  ],
+  "author": "Ben Whatley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/darklordzw/winston-splunk-transport/issues"
+  },
+  "homepage": "https://github.com/darklordzw/winston-splunk-transport#readme",
+  "dependencies": {
+    "splunk-logging": "0.10.1",
+    "winston-transport": "4.2.0"
+  },
+  "devDependencies": {
+    "eslint": "5.10.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-config-prettier": "3.3.0",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-prettier": "3.0.0",
+    "prettier": "1.15.3"
+  }
+}
