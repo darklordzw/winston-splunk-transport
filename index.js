@@ -1,4 +1,4 @@
-const SplunkLogger = require("splunk-logging");
+const SplunkLogger = require("splunk-logging").Logger;
 const Transport = require("winston-transport");
 
 module.exports = class SplunkTransport extends Transport {
