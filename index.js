@@ -1,4 +1,5 @@
-const SplunkLogger = require("splunk-logging").Logger;
+const { Logger } = require("splunk-logging");
+const { MESSAGE } = require("triple-beam");
 const Transport = require("winston-transport");
 
 module.exports = class SplunkTransport extends Transport {
@@ -50,39 +51,28 @@ module.exports = class SplunkTransport extends Transport {
       url: opts.splunk.url || "https://localhost:8088"
     };
 
-    this.splunkLogger = new SplunkLogger(splunkOptions);
+    this.logger = new Logger(splunkOptions);
 
     if (opts.splunk.silentErrors) {
-      this.splunkLogger.error = () => {};
+      this.logger.error = () => {};
     }
   }
 
   log(info, callback) {
-    // Append splat items to the message as "meta".
-    let meta;
-    if (info["Symbol(splat)"] && info["Symbol(splat)"].length) {
-      meta = [];
-      info["Symbol(splat)"].forEach(item => {
-        if (item instanceof Error) {
-          meta.push({
-            error: item.message,
-            name: item.name,
-            stack: item.stack
-          });
-        } else if (Object.keys(item).length) {
-          meta.push(item);
-        }
-      });
-    }
-
     const payload = {
-      message: {
-        message: info.message,
-        meta
-      },
+      message: info[MESSAGE],
       metadata: { source: this.source, sourcetype: this.sourcetype },
       severity: info.level
     };
-    this.splunkLogger.send(payload, () => callback());
+    this.logger.send(payload, () => callback());
+  }
+
+  close(callback) {
+    this.logger.config.batchInterval = 0;
+    this.logger.flush(() => {
+      if (callback) {
+        callback();
+      }
+    });
   }
 };
