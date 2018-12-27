@@ -24,7 +24,7 @@ describe("SplunkTransport", () => {
 
   describe("#log()", () => {
     it("should return -1 when the value is not present", () => {
-      logger.info({ teskey: "testval" });
+      logger.error(new Error("test"));
     });
   });
 });

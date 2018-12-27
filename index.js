@@ -2,6 +2,21 @@ const { Logger } = require("splunk-logging");
 const { MESSAGE } = require("triple-beam");
 const Transport = require("winston-transport");
 
+/**
+ * Tries to parse a string as JSON. If successful, the object is returned.
+ * @param {string} jsonString The string to parse.
+ * @returns {object} The parsed object, or null.
+ */
+function tryParseJSON(jsonString) {
+  try {
+    const obj = JSON.parse(jsonString);
+    if (obj && typeof obj === "object") {
+      return obj;
+    }
+  } catch (e) {} // eslint-disable-line no-empty
+  return null;
+}
+
 module.exports = class SplunkTransport extends Transport {
   /**
    *
@@ -53,6 +68,9 @@ module.exports = class SplunkTransport extends Transport {
 
     this.logger = new Logger(splunkOptions);
 
+    // We want winston to format our log messages, just pass them through directly.
+    this.logger.eventFormatter = message => message;
+
     if (opts.splunk.silentErrors) {
       this.logger.error = () => {};
     }
@@ -60,10 +78,11 @@ module.exports = class SplunkTransport extends Transport {
 
   log(info, callback) {
     const payload = {
-      message: info[MESSAGE],
+      message: tryParseJSON(info[MESSAGE]) || info[MESSAGE],
       metadata: { source: this.source, sourcetype: this.sourcetype },
       severity: info.level
     };
+
     this.logger.send(payload, () => callback());
   }
 
