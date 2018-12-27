@@ -30,7 +30,6 @@ module.exports = class SplunkTransport extends Transport {
    * @param {integer} [opts.splunk.maxBatchSize=1024] The size of the batch, in bytes, to accumulate before flushing.
    * @param {integer} [opts.splunk.maxRetries=10] The number of times the transport should retry sending failed batches.
    * @param {string} [opts.splunk.url=https://localhost:8088] The url used to connect to the Splunk appender.
-   * @param {boolean} [opts.splunk.silentErrors=false] If true, errors from the Splunk appender are swallowed.
    */
   constructor(opts) {
     super(opts);
@@ -70,10 +69,7 @@ module.exports = class SplunkTransport extends Transport {
 
     // We want winston to format our log messages, just pass them through directly.
     this.logger.eventFormatter = message => message;
-
-    if (opts.splunk.silentErrors) {
-      this.logger.error = () => {};
-    }
+    this.logger.error = () => {};
   }
 
   log(info, callback) {

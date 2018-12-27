@@ -6,15 +6,24 @@ describe("SplunkTransport", () => {
   let logger;
 
   before(() => {
+    const errorStackFormat = winston.format(info => {
+      if (info instanceof Error) {
+        return Object.assign({}, info, {
+          stack: info.stack,
+          message: info.message
+        });
+      }
+      return info;
+    });
     logger = winston.createLogger({
       level: "info",
-      format: winston.format.json(),
       defaultMeta: { service: "user-service" },
       transports: [
         new SplunkTransport({
           splunk: { token: "2042f3db-823f-4263-811e-fbf33349b3ee" }
         })
-      ]
+      ],
+      format: winston.format.combine(errorStackFormat(), winston.format.json())
     });
   });
 
