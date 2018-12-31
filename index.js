@@ -13,7 +13,7 @@ function tryParseJSON(jsonString) {
     if (obj && typeof obj === "object") {
       return obj;
     }
-  } catch (e) {} // eslint-disable-line no-empty
+  } catch (err) {} // eslint-disable-line no-empty
   return null;
 }
 
@@ -72,6 +72,15 @@ module.exports = class SplunkTransport extends Transport {
     this.logger.error = () => {};
   }
 
+  get splunkConfig() {
+    return this.logger.config;
+  }
+
+  /**
+   * Called to log a message to splunk.
+   * @param {object} info The info to log.
+   * @param {*} [callback] Optional function to call when the log action is complete.
+   */
   log(info, callback) {
     const payload = {
       message: tryParseJSON(info[MESSAGE]) || info[MESSAGE],
@@ -79,11 +88,27 @@ module.exports = class SplunkTransport extends Transport {
       severity: info.level
     };
 
-    this.logger.send(payload, () => callback());
+    this.logger.send(payload, err => {
+      if (err) {
+        this.emit("warn", err);
+      } else {
+        this.emit("logged", info);
+      }
+      if (callback) {
+        callback();
+      }
+    });
   }
 
+  /**
+   * Called when the transport shout close.
+   * @param {function} [callback] Optional function to call when the transport is closed.
+   */
   close(callback) {
+    // Set the batchInterval to 0 to stop the background batching loop.
     this.logger.config.batchInterval = 0;
+
+    // Flush any remaining events.
     this.logger.flush(() => {
       if (callback) {
         callback();
