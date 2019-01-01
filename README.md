@@ -2,6 +2,8 @@
 
 A simple [winston] transport for logging to [Splunk] via the [HTTP Event Collector].
 
+Log events are sent in batches by default. To disable batching, set the "splunk.batchInterval" config param to 0.
+
 ## Installation
 
 ```sh
