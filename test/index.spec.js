@@ -82,7 +82,6 @@ describe("SplunkTransport", () => {
       });
       logger = winston.createLogger({
         level: "info",
-        defaultMeta: { service: "user-service" },
         transports: [transport],
         format: winston.format.combine(
           errorStackFormat(),

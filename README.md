@@ -17,8 +17,8 @@ const winston = require("winston");
 const SplunkTransport = require("winston-splunk-http-transport");
 
 // Now use winston as normal
-var logger = new winston.Logger({
-  transports: [new SplunkTransport({ splunk: { token: "your token" })]
+const logger = winston.createLogger({
+  transports: [new SplunkTransport({ splunk: { token: "your token" } })]
 });
 
 logger.info("Hello world!");
