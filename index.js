@@ -30,6 +30,7 @@ module.exports = class SplunkTransport extends Transport {
    * @param {integer} [opts.splunk.maxBatchSize=1024] The size of the batch, in bytes, to accumulate before flushing.
    * @param {integer} [opts.splunk.maxRetries=10] The number of times the transport should retry sending failed batches.
    * @param {string} [opts.splunk.url=https://localhost:8088] The url used to connect to the Splunk appender.
+   * @param {string} [opts.splunk.index] The Splunk index to log to. Logs to the default index for the token if not specified.
    */
   constructor(opts) {
     super(opts);
@@ -41,6 +42,7 @@ module.exports = class SplunkTransport extends Transport {
     // "source" and "sourcetype" are used to set the corresponding splunk log metadata.
     this.source = opts.splunk.source || "winston";
     this.sourcetype = opts.splunk.sourcetype || "winston-splunk-http-transport";
+    this.index = opts.splunk.index;
 
     // Configure splunk defaults.
     const splunkOptions = {
@@ -84,7 +86,11 @@ module.exports = class SplunkTransport extends Transport {
   log(info, callback) {
     const payload = {
       message: tryParseJSON(info[MESSAGE]) || info[MESSAGE],
-      metadata: { source: this.source, sourcetype: this.sourcetype },
+      metadata: {
+        source: this.source,
+        sourcetype: this.sourcetype,
+        index: this.index
+      },
       severity: info.level
     };
 

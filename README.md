@@ -40,6 +40,7 @@ Create a new instance of `SplunkTransport`. Takes the following configuration:
 - **[opts.maxBatchSize=1024]:** The size of the batch, in bytes, to accumulate before flushing.
 - **[opts.splunk.maxRetries=10]:** The number of times the transport should retry sending failed batches.
 - **[opts.splunk.url=https://localhost:8088]:** The url used to connect to the Splunk appender.
+- **[opts.splunk.index]:** The Splunk index to log to. Logs to the default index for the token if not specified.
 
 [winston]: https://github.com/winstonjs/winston
 [splunk]: http://www.splunk.com
