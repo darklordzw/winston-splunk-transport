@@ -100,10 +100,11 @@ module.exports = class SplunkTransport extends Transport {
       } else {
         this.emit("logged", info);
       }
-      if (callback) {
-        callback();
-      }
     });
+
+    if (callback) {
+      callback();
+    }
   }
 
   /**
