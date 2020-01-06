@@ -1,6 +1,6 @@
 {
   "name": "winston-splunk-http-transport",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple winston transport for logging to splunk.",
   "main": "index.js",
   "scripts": {
