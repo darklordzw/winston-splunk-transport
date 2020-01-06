@@ -68,10 +68,7 @@ describe("SplunkTransport", () => {
       // Define a custom format.
       const errorStackFormat = winston.format(info => {
         if (info instanceof Error) {
-          return Object.assign({}, info, {
-            stack: info.stack,
-            message: info.message
-          });
+          return { ...info, stack: info.stack, message: info.message };
         }
         return info;
       });
